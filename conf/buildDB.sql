@@ -38,3 +38,5 @@ time varchar(255) not null comment '项目时间',
 type varchar(255) not null comment '项目类型',
 mark double(2,1) not null comment '项目分',
 student_id int(255) not null comment '学生ID');/*项目表*/
+
+insert into score_student_users (id,name,password,number) values (0,'许瑞锐','15209010022','15209010022');
