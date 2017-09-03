@@ -7,10 +7,9 @@ class Index extends \think\Controller
 {
     public function index(Request $request)
     {
-		if($request->isPost()){
-			
-		}
-		else
 		return $this->fetch();
     }
+	public function login(){
+		return 'yes';
+	}
 }

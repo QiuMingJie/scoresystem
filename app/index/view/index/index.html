@@ -36,23 +36,23 @@
 				</div>
 				<div class="mainContent-R">
 					<h2>学生学分系统</h2>
-					<form method=post action='index/index/index'>
+					<form>
 						<div class="roleOption">
-							<label for="roleoption_Stu"><input type="radio" name="roleoption" id="roleOption_Stu" checked="checked"value=0><span>学生</span></label>
-							<label for="roleoption_Admin"><input type="radio" name="roleoption" id="roleOption_Admin " value=1><span>管理员</span></label>
+							<label for="roleoption_Stu"><input type="radio" name="roleoption" id="roleOption_stu" checked="checked"><span>学生</span></label>
+							<label for="roleoption_Admin"><input type="radio" name="roleoption" id="roleOption_teacher" ><span>管理员</span></label>
 						</div>
 						<div class="infoInput">
 							<div class="info">
-								<i class="xszhcpFont xszhcp-yonghu"></i><input type="text" name="username" placeholder="请输入账号">
+								<i class="xszhcpFont xszhcp-yonghu"></i><input type="text" id="user" placeholder="请输入账号" >
 							</div>
 							<div class="wraper">
 								<div class="child hrLine"></div>
 							</div>
 							<div class="info">
-								<i class="xszhcpFont xszhcp-mima"></i><input type="password" name="password" placeholder="请输入密码">
+								<i class="xszhcpFont xszhcp-mima"></i><input type="password" id="pwd" placeholder="请输入密码">
 							</div>
 						</div>
-						<button  type="submit" class="button" id="loginBtn">登录</button>
+						<button  type="button" class="button" id="loginBtn" onClick="return checkForm()">登录</button>
 					</form>
 				</div>
 			</div>
@@ -63,26 +63,52 @@
 			<span>CopyRight © 2015-2016 By GT-FLY</span>
 		</div>
 	</footer>
-
-
-
 	<script type="text/javascript">
-		// border-radius for IE8
-		$('.button').corner();
-		$('.logo').corner();
-		$('.mainContent').corner();
-
-		// button交互
-		function login(){
-			var oBtn=document.getElementById('loginBtn');
-			oBtn.innerHTML='正在登录...';
+	function checkForm(){
+		var user=document.getElementById('user').value;
+		var pwd=document.getElementById('pwd').value;
+		if(user===''||pwd===''){
+			alert('用户名或密码不能为空！');
+			var value=(user==='')?pwd:user;
+			var name=(user==='')?'pwd':'user';
+			document.getElementById(name).value=value;
+			return false;
 		}
-
-		var oBtn=document.getElementById('loginBtn');
-		oBtn.onclick=function() {
-			login();
-			$('.button').corner();
-		};
+		else if(user===''&&pwd===''){
+			alert('用户名和密码不能为空！');
+			return false;
+		}
+		else{
+			var is_stu=document.getElementById('roleOption_stu').checked;
+			if(is_stu){
+				var pattern=/[0-9]{11}/;
+				var result=pattern.test(user);
+				if(!result||user.length!=11){
+					alert('用户名格式不正确！');
+					document.getElementById('user').value=user;
+					return false;
+				}
+				else{
+					var xhr=new XMLHttpRequest();
+					console.log(xhr);
+					xhr.onreadystatechange=function()
+					{
+						if (xhr.readyState==4 && xhr.status==200)
+						{
+								if(xhr.responseText=='yes'){
+								alert('get');}
+						}
+					}
+					xhr.open("POST","index/index/login",true);
+					xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+					xhr.send("username="+user+"&password="+pwd);
+					return true;
+				}
+			}
+			return false;
+			
+		}
+	}
 	</script>
 </body>
 </html>
